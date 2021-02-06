@@ -13,7 +13,7 @@
            }
           .col-md-3 img{
           width:270px;
-          height:230px;
+          max-height:230px;
           }
           body.carousel-indicator li
           background-color:red;
@@ -43,14 +43,14 @@
 {% block body %}
      {% load static %}
 
-<
+
 
 <div class="container">
 
-    !--    slide show start here-->
+<!--        slide show start here-->
     {% for product, range ,nslides in allproducts %}
 
-    <h1>{{product.0.category}}</h1>
+    <h4 class="my-4">flash sale : {{ product.0.category}}-recomended products</h4>
     <div id="demo{{forloop.counter}}" class="carousel slide my-3" data-ride="carousel" >
         <ul class="carousel-indicators">
           <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
@@ -107,7 +107,10 @@
     </a>
     {% endfor%}
 
+</div>
 
   {% endblock %}
-</div>
+
+
+{% block js %} {% endblock %}
 
