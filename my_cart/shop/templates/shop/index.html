@@ -1,15 +1,8 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% extends 'shop/basic.html' %}
+{% block title %}shop{% endblock %}
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+{% block css %}
 
-    <title>Shop</title>
-      <style>
           .col-md-3
           {
           display: inline-block;
@@ -19,8 +12,8 @@
            background-color:blue;
            }
           .col-md-3 img{
-          width:auto;
-          height:100%;
+          width:270px;
+          height:230px;
           }
           body.carousel-indicator li
           background-color:red;
@@ -30,8 +23,14 @@
 
 
           body.carousel-control-prev-icon,
-          body.carousel-control-next-icon,
-          background-color:blue;
+          body.carousel-control-next-icon,{
+          background-color:black;
+          }
+          .carousel-control-prev
+          .carousel-control-next{
+          top:auto;
+          bottom:auto;
+
           }
 
 
@@ -39,69 +38,35 @@
           padding-left:10,
           padding-right:10;
 
+{% endblock %}
 
+{% block body %}
+     {% load static %}
 
+<
 
-      </style>
-  </head>
-  <body>
-  {% load static%}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">My Cart</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+<div class="container">
 
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
+    !--    slide show start here-->
+    {% for product, range ,nslides in allproducts %}
 
-
-
-    <div id="demo" class="carousel slide " data-ride="carousel" >
-    <ul class="carousel-indicators">
-        <li data-target="demo" data-slide-to="0" class="active"></li>
-        <li data-target="demo" data-slide-to="1" class="active"></li>
-        <li data-target="demo" data-slide-to="2" class="active"></li>
-
+    <h1>{{product.0.category}}</h1>
+    <div id="demo{{forloop.counter}}" class="carousel slide my-3" data-ride="carousel" >
+        <ul class="carousel-indicators">
+          <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
+        {% for i in range%}
+        <li data-target="#demo{{forloop.parentloop.counter}}" data-slide-to="{{i}}" ></li>
+        {% endfor %}
     </ul>
-<!--    slide show start here-->
-    <div class="container-carousel-inner no-padding  my-3">
-        <div class="carousel-item-active "></div>
+
+    <div class="container-carousel-inner no-padding">
+        <div class="carousel-item-active ">
         <div class="col-xs-3 col-sm-3 col-md-3">
             <div class="card" style="width: 18rem;">
-                <img src="{%static 'shop/1.jpg'%}" class="card-img-top" alt="...">
+                <img src='/media/{{product.0.image}}' class="card-img-top" alt="...">
                 <div class="card-body">
-                <h5 class="card-title">Watch</h5>
-                <p class="card-text">Luxurious watch</p>
+                <h5 class="card-title">{{product.0.product_name}}</h5>
+                <p class="card-text">{{product.0.desc}}</p>
              <a href="#" class="btn btn-primary">Go with prodect</a>
                 </div>
             </div>
@@ -109,117 +74,40 @@
         </div>
 
 <!--        2 time card -->
+        {% for i in product|slice:"1:"%}
         <div class="col-xs-3 col-sm-3 col-md-3">
             <div class="card" style="width: 18rem;">
-                <img src="{%static 'shop/2.png'%}" class="card-img-top" alt="...">
+                <img src='/media/{{i.image}}' class="card-img-top" alt="...">
                 <div class="card-body">
-                <h5 class="card-title">Mobile</h5>
-                <p class="card-text">smartest phone.</p>
+                <h5 class="card-title">{{i.product_name}}</h5>
+                <p class="card-text">{{i.desc}}</p>
              <a href="#" class="btn btn-primary">Go with product</a>
                 </div>
             </div>
+        </div>
+        {% if forloop.counter|divisibleby:3 and forloop.counter > 0 and not forloop.last %}
+    </div><div class="container">
+        {% endif %}
 
-        </div>
-
-<!--        3 time card -->
-        <div class="col-xs-3 col-sm-3 col-md-3">
-            <div class="card" style="width: 18rem;">
-                <img src="{%static 'shop/3.jpeg'%}" class="card-img-top" alt="...">
-                <div class="card-body">
-                <h5 class="card-title">Camera</h5>
-                <p class="card-text">High clear vision camera</p>
-             <a href="#" class="btn btn-primary">Go with prodect</a>
-                </div>
-            </div>
-        </div>
-<!--        4 card of 1 slice-->
-        <div class="col-xs-3 col-sm-3 col-md-3">
-            <div class="card" style="width: 18rem;">
-                <img src="{%static 'shop/4.jpg'%}" class="card-img-top" alt="...">
-                <div class="card-body">
-                <h5 class="card-title">white shoe</h5>
-                <p class="card-text">shoes</p>
-             <a href="#" class="btn btn-primary">Go with prodect</a>
-                </div>
-            </div>
-        </div>
-<!--whole three casd copy withiout active carousel-->
-
-        </div>
-            <div class="carousel-item-active">
-        <div class="col-xs-3 col-sm-3 col-md-3">
-            <div class="card" style=" width: 18rem; ">
-                <img src="{%static 'shop/5.jpg'%}" class="card-img-top" alt="...">
-                <div class="card-body">
-                <h5 class="card-title">Home Apliance</h5>
-                <p class="card-text">Decorate Your home</p>
-             <a href="#" class="btn btn-primary">Go with prodect</a>
-                </div>
-            </div>
-
-        </div>
-
-<!--        2 time card -->
-        <div class="col-xs-3 col-sm-3 col-md-3">
-            <div class="card" style="width: 18rem;">
-                <img src="{%static 'shop/6.jpg'%}" class="card-img-top" alt="...">
-                <div class="card-body">
-                <h5 class="card-title">face wash</h5>
-                <p class="card-text">for Men and Women</p>
-             <a href="#" class="btn btn-primary">Go with prodect</a>
-                </div>
-            </div>
-        </div>
-<!--        3 time card -->
-        <div class="col-xs-3 col-sm-3 col-md-3">
-            <div class="card" style="width: 18rem;">
-                <img src="{%static 'shop/7.jpg'%}" class="card-img-top" alt="...">
-                <div class="card-body">
-                <h5 class="card-title">Girl's skin care</h5>
-                <p class="card-text">Urbar colors for soft skins</p>
-             <a href="#" class="btn btn-primary">Go with prodect</a>
-                </div>
-            </div>
-            </div>
-
-<!--        4 card-->
-        <div class="col-xs-3 col-sm-3 col-md-3">
-            <div class="card" style="width: 18rem;">
-                <img src="{%static 'shop/8.jpg'%}" class="card-img-top" alt="...">
-                <div class="card-body">
-                <h5 class="card-title">Amplifire</h5>
-                <p class="card-text"> High Volume and connector</p>
-             <a href="#" class="btn btn-primary">Go with prodect</a>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
-    </div>
+
+</div>
+</div>
 
 
 <!--    left and  right control for slide-->
 
-    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+    <a class="carousel-control-prev" href="#demo{{forloop.counter}}" data-slide="prev">
         <span class="carousel-control-prev-icon"></span>
     </a>
 
-    <a class="carousel-control-next" href="#demo" data-slide="next">
+    <a class="carousel-control-next" href="#demo{{forloop.counter}}" data-slide="next">
         <span class="carousel-control-next-icon"></span>
     </a>
+    {% endfor%}
 
 
+  {% endblock %}
+</div>
 
-    <!-- Optional JavaScript; choose one of the two! -->
-
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
-    -->
-
-
-  </body>
-</html>
