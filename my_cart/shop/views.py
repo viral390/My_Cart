@@ -32,18 +32,18 @@ def about(request):
 
 
 def contact(request):
-    return HttpResponse("this is my contact page")
+    return render(request, 'shop/contact.html')
 
 def search(request):
-    return HttpResponse("this is my search page")
+    return render(request, 'shop/search.html')
 
 def productviews(request):
-    return HttpResponse("this is my product views page")
+    return render(request, 'shop/productviews.html')
 
 
 def checkout(request):
-    return HttpResponse("this is my checkout  page")
+    return render(request, 'shop/checkout.html')
 
 
 def tracker(request):
-    return HttpResponse("this is my tracker page")
+    return render(request, 'shop/tracker.html')
