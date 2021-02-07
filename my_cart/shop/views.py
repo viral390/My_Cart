@@ -37,8 +37,11 @@ def contact(request):
 def search(request):
     return render(request, 'shop/search.html')
 
-def productviews(request):
-    return render(request, 'shop/productviews.html')
+def productviews(request,myid):
+    # fetch the product using the id
+    products = product.objects.filter(id=myid)
+
+    return render(request, 'shop/productviews.html',{'product':products[0]})
 
 
 def checkout(request):

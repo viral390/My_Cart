@@ -72,8 +72,9 @@
                 <img src='/media/{{i.image}}' class="card-img-top" alt="...">
                 <div class="card-body">
                 <h5 class="card-title">{{forloop.counter}} {{i.product_name}}</h5>
-                <p class="card-text">{{i.desc}}</p>
+                <p class="card-text">{{i.desc|slice:"0:50"}}...</p>
                     <button id="pr{{i.id}}" class="btn btn-primary cart">Go with product</button>
+                    <a href="/shop/product/{{i.id}}" ><button id="qv{{i.id}}" class="btn btn-primary cart">quickview</button></a>
                 </div>
             </div>
         </div>
@@ -83,62 +84,12 @@
 
         {% endfor %}
     </div>
-
 </div>
 </div>
 
 
-<!--    left and  right control for slide-->
 
-    <a class="carousel-control-prev" href="#demo{{forloop.counter}}" data-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-    </a>
-
-    <a class="carousel-control-next" href="#demo{{forloop.counter}}" data-slide="next">
-        <span class="carousel-control-next-icon"></span>
-    </a>
-    </div>
+</div>
     {% endfor%}
-
-
 </div>
-
   {% endblock %}
-
-
-{% block js %}
-<script type="text/javascript">
-
-console.log('working');
-if(localStorage.getItem('cart') == null){
-var cart = {};
-}
-
-else{
-cart =JSON.parse(localStorage.getItem('cart'));
-document.getElementById("cart").innerHTML = Object.keys(cart).length;
-}
-
-$('.cart').click(function(){
-
-console.log('clicked');
-
-var idstr = this.id.toString();
-console.log(idstr);
-if (card[idstr] != undefined){
-card[idstr] = card[idstr] + 1;
-}
-else
-{
-card[idstr] = 1;
-}
-console.log(cart);
-localStorage.setItem('cart',JSON.stringify(cart));
-document.getElementById("cart").innerHTML = Object.keys(cart).length;
-});
-$('#popcart').popover();
-document.getElementById("popcart").setAttribute('data-content','<h5>Cart</h5>');
-</script>
-
-{% endblock %}
-
