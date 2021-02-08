@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import product
+from .models import product, Contact
 from math import ceil
 
 # Create your views here.
@@ -33,12 +33,13 @@ def about(request):
 
 def contact(request):
     if request.method=="POST":
-        print(request)
         name =request.POST.get("name", "")
         email =request.POST.get("email", "")
         phone =request.POST.get("phone", "")
         desc =request.POST.get("desc", "")
         print(name, email, phone, desc)
+        contact = Contact(name=name,email=email,phone=phone,desc=desc)
+        contact.save()
     return render(request, 'shop/contact.html')
 
 

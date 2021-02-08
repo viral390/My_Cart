@@ -16,7 +16,7 @@ class product(models.Model):
         return self.product_name
 
 
-class contact(models.Model):
+class Contact(models.Model):
     name_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
     phone = models.CharField(max_length=70, default="")
