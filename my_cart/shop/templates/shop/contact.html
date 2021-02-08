@@ -2,4 +2,40 @@
 
 {% block title %} contact Us {% endblock %}
 
-{% block body %}this is contact page {% endblock %}
+{% block body %}
+
+<div class="container">
+    <h1>Contact us regarding any query</h1>
+
+<form action="/shop/contact/" method="post">{% csrf_token %}
+    <div class="mb-3">
+    <label for="Name" class="form-label">Your full name</label>
+    <input type="text" class="form-control"  name="name" id="Name">
+  </div>
+  <div class="mb-3">
+
+    <label for="Email" class="form-label">Email address</label>
+    <input type="email" class="form-control" name="email" id="Email" >
+    <div id="emailHelp"  class="form-text">We'll never share your email with anyone else.</div>
+  </div>
+
+    <div class="mb-3">
+    <label for="Phone" class="form-label">Mobile number</label>
+    <input type="tel" class="form-control"  name="phone" id="Phone">
+  </div>
+    <div class="mb-3">
+  <label for="desc" class="form-label">Descriptions</label>
+  <textarea class="form-control"  name="desc" id="desc" rows="3"></textarea>
+</div>
+
+
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+</div>
+
+{% endblock %}
