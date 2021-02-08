@@ -49,7 +49,7 @@
 <div class="container">
 
 <!--        slide show start here-->
-    {% for product, range ,nslides in allproducts %}
+    {% for product, range , nslides in allproducts %}
 
     <h4 class="my-4">flash sale : {{ product.0.category}}-recomended products</h4>
     <div class="row">
@@ -80,7 +80,19 @@
         </div>
         {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}
     </div><div class="container">
+
+
+
+
         {% endif %}
+        <a class="carousel-control-prev" href="#" role="button" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#" role="button" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </a>
 
         {% endfor %}
     </div>
@@ -93,3 +105,4 @@
     {% endfor%}
 </div>
   {% endblock %}
+
