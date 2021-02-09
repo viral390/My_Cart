@@ -32,13 +32,13 @@ def about(request):
 
 
 def contact(request):
-    if request.method=="POST":
+    if request.method == "POST":
         name =request.POST.get("name", "")
         email =request.POST.get("email", "")
         phone =request.POST.get("phone", "")
         desc =request.POST.get("desc", "")
         print(name, email, phone, desc)
-        contact = Contact(name=name,email=email,phone=phone,desc=desc)
+        contact = Contact(name=name, email=email, phone=phone, desc=desc)
         contact.save()
     return render(request, 'shop/contact.html')
 
@@ -53,8 +53,7 @@ def productviews(request,myid):
     # fetch the product using the id
     products = product.objects.filter(id=myid)
 
-    return render(request, 'shop/productviews.html',{'product':products[0]})
-
+    return render(request, 'shop/productviews.html', {'product':products[0]})
 
 def checkout(request):
     return render(request, 'shop/checkout.html')
