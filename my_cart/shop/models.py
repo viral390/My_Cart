@@ -29,14 +29,17 @@ class Contact(models.Model):
 
 
 
-class orders(models.Model):
-    order_id = models.AutoField(primary_key=True)
+class Order(models.Model):
+    Order_id = models.AutoField(primary_key=True)
     items_json = models.CharField(max_length=5000)
     name = models.CharField(max_length=50)
-    email= models.CharField(max_length=70, default="")
-    mobile= models.CharField(max_length=70, default="")
+    email = models.CharField(max_length=70, default="")
+    mobile = models.CharField(max_length=70, default="")
     add1 = models.CharField(max_length=500, default="")
-    add2 =  models.CharField(max_length=500, default="")
-    city= models.CharField(max_length=15)
+    add2 =models.CharField(max_length=500, default="")
+    city = models.CharField(max_length=15)
     state = models.CharField(max_length=100)
     zip_code = models.CharField(max_length=15)
+
+    def __str__(self):
+        return self.name
