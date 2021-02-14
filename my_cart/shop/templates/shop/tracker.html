@@ -2,4 +2,112 @@
 
 {% block title %} Tracker your order {% endblock %}
 
-{% block body %}this is tracker page {% endblock %}
+{% block body %}
+<div class="container">
+	<div class="col my-4">
+	<h2> My cart Tracker - track your cart item</h2>
+	<div >
+		<ul class="list-group" id="items">
+ 
+		</ul>
+
+	</div>
+</div>
+<div class='col my-4'>
+	<h2> step-2	</h2>
+	<form class="row g-3"  method="post" action="/shop/checkout/">{% csrf_token %}
+        <input type="hidden" name="items_json" id="items_json">
+		<div class="col-md-6">
+    <label for="inputname" class="form-label">Name</label>
+    <input type="text" class="form-control" id="inputname" name='name' placeholder="name">
+  </div>
+  <div class="col-md-6">
+    <label for="inputEmail" class="form-label">Email</label>
+    <input type="email" class="form-control" id="inputEmail" name='email' placeholder="Email">
+  </div>
+  <div class="col-6">
+    <label for="inputmobile" class="form-label">Mobile no.</label>
+    <input type="tel" class="form-control" id="inputmobile" name='mobile' placeholder="1234">
+  </div>
+  
+  <div class="col-12">
+    <label for="inputAddress1" class="form-label">Address1 </label>
+    <input type="text" class="form-control" id="inputAddress1"  name='add1' placeholder="1234 Main St">
+  </div>
+  <div class="col-12">
+    <label for="inputAddress2" class="form-label">Address2</label>
+    <input type="text" class="form-control" id="inputAddress2"  name='add2' placeholder="Apartment, studio, or floor">
+  </div>
+  <div class="col-md-6">
+    <label for="inputCity" class="form-label">City</label>
+    <input type="text" class="form-control" id="inputCity" name='city'>
+  </div>
+  <div class="col-md-4">
+    <label for="inputState" class="form-label">State</label>
+    <input type="text" class="form-control" id="inputState" name='state' placeholder="Enter state">
+  </div>
+  <div class="col-md-2">
+    <label for="inputZip" class="form-label">Zip</label>
+    <input type="text" class="form-control" id="inputZip" name='zip_code'>
+  </div>
+
+
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Place order</button>
+  </div>
+</form>
+</div>
+</div>
+
+
+{% endblock %}
+
+
+
+
+{% block js %}
+<script type="text/javascript">
+
+
+if $.isEmptyObject(cart){
+
+}
+else{
+if (localStorage.getItem('cart') == null){
+var cart = {};
+}else{
+  cart =JSON.parse(localStorage.getItem('cart'));
+   
+}
+console.log(cart);
+ var sum = 0;
+if $(.is EmptyObject(cart)){
+	//if object is empty
+	mystr=`<p>your cart is empty add some item for checkout</p>`
+	$('#items').append(mystr);
+}
+else{
+for (item in cart){
+	let name = cart[item][1];
+	let qty = cart[item][0];
+	sum = sum+qty;
+	mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+    ${name} 
+
+    <span class="badge bg-primary rounded-pill">${qty}</span>
+  </li> `
+
+$('#items').append(mystr);
+}
+}
+document.getElementById("cart").innerHTML =sum;
+
+$('#item_json').val(JSON.stingify(cart));
+{% if thank %}
+alert('thanks for ordering {{id}}and u can track order on tracker')
+localStorage.clear();
+document.location = '/shop';
+{% endif %}
+</script>
+
+{% endblock %}

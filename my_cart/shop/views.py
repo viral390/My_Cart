@@ -1,17 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import product, Contact , Order
+from .models import product, Contact , Order , Orderupdate
 from math import ceil
 
 # Create your views here.
 
 def index(request):
-    # products = product.objects.all()
-    # print(products)
-    # n = len(products)
-    # nslides= n//4 + ceil((n/4)-(n//4))
-    # param = {'no_of_slides': nslides,'range':range(1,nslides), 'product':products}
-    # allproducts= [[products, range(1, nslides), nslides], [products, range(1, nslides), nslides]] (old list)
     allproducts = []
     catproducts = product.objects.values('category','id')
     cats = {item['category'] for item in catproducts}
@@ -49,15 +43,20 @@ def contact(request):
 def search(request):
     return render(request, 'shop/search.html')
 
+
+
+
 def productviews(request,myid):
     # fetch the product using the id
     products = product.objects.filter(id=myid)
 
     return render(request, 'shop/productviews.html', {'product':products[0]})
 
+
+
 def checkout(request):
     if request.method == "POST":
-        items_json = request.POST.get("items_name","")
+        items_json = request.POST.get("items_json","")
         name =request.POST.get("name", "")
         email =request.POST.get("email", "")
         mobile =request.POST.get("mobile", "")
@@ -67,8 +66,10 @@ def checkout(request):
         state =request.POST.get("state", "")
         zip_code =request.POST.get("zip_code", "")
         print(items_json,name, email, mobile, add1, add2, city, state, zip_code)
-        order = Order(items_name=items_json,name=name, email=email, mobile=mobile, add1=add1, add2=add2, city=city, state=state, zip_code=zip_code )
+        order = Order(items_json=items_json,name=name, email=email, mobile=mobile, add1=add1, add2=add2, city=city, state=state, zip_code=zip_code )
         order.save()
+        update=Orderupdate(order_id=order.Order_id, update_desc="order has been placed")
+        update.save()
         thank = True
         id = order.Order_id
         return render(request, 'shop/checkout.html',{'thank':thank, 'id':id})
