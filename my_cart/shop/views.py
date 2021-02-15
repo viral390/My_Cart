@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import product, Contact , Order , Orderupdate
 from math import ceil
-
+import json
 # Create your views here.
 
 def index(request):
@@ -15,6 +15,7 @@ def index(request):
         nSlides = n // 4 + ceil((n / 4) - (n // 4))
         allproducts.append([prod, range(1, nSlides), nSlides])
     param ={'allproducts': allproducts}
+
     return render(request, 'shop/index.html', param)
 
 
@@ -26,6 +27,7 @@ def about(request):
 
 
 def contact(request):
+    thank=False
     if request.method == "POST":
         name =request.POST.get("name", "")
         email =request.POST.get("email", "")
@@ -34,7 +36,8 @@ def contact(request):
         print(name, email, phone, desc)
         contact = Contact(name=name, email=email, phone=phone, desc=desc)
         contact.save()
-    return render(request, 'shop/contact.html')
+        thank=True
+    return render(request, 'shop/contact.html',{'thank':thank})
 
 
 
@@ -77,4 +80,24 @@ def checkout(request):
 
 
 def tracker(request):
+    if request.method == "POST":
+        order_ID =request.POST.get("order_ID", "")
+        email =request.POST.get("email", "")
+        try:
+            order = Order.Objects.filter(order_id=order_ID, email=email)
+            if len(order)>0:
+                update = Orderupdate.Objects.filter(order_id=order_ID)
+                updates = []
+                for item in update:
+                    updates.append({'text':item.update.desc,'time':item.timestemp })
+                    response = json.dumps([updates, order[0].items_json], default=str)
+                return HttpResponse(response)
+
+            else:
+                return HttpResponse({})
+        except :
+            return HttpResponse({})
+
+
+
     return render(request, 'shop/tracker.html')

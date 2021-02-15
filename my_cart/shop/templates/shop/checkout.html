@@ -9,9 +9,8 @@
 	<h2> step-1  My cart checkout  your cart item</h2>
 	<div >
 		<ul class="list-group" id="items">
- 
 		</ul>
-
+        <span id="totalprice"></span>
 	</div>
 </div>
 <div class='col my-4'>
@@ -82,6 +81,7 @@ var cart = {};
 }
 console.log(cart);
  var sum = 0;
+ var totalprice = 0;
 if $(.is EmptyObject(cart)){
 	//if object is empty
 	mystr=`<p>your cart is empty add some item for checkout</p>`
@@ -91,7 +91,9 @@ else{
 for (item in cart){
 	let name = cart[item][1];
 	let qty = cart[item][0];
+	let itenprice = cart[item][2];
 	sum = sum+qty;
+	totalprice=totalprice+qyt*itemprice
 	mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
     ${name} 
 
@@ -102,6 +104,7 @@ $('#items').append(mystr);
 }
 }
 document.getElementById("cart").innerHTML =sum;
+document.getElementById("totalprice").innerHTML =totalprice;
 
 $('#item_json').val(JSON.stingify(cart));
 {% if thank %}

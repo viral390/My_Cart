@@ -37,5 +37,14 @@
 </form>
 
 </div>
+{% block js%}
+<script>
+{% if thank %}
+alert('thanks for contacting us.we will reach you as soon as possible')
+document.location = '/shop/contact';
+{% endif %}
+</script>
+{% endblock %}
+
 
 {% endblock %}

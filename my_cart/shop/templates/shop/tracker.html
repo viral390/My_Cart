@@ -3,59 +3,34 @@
 {% block title %} Tracker your order {% endblock %}
 
 {% block body %}
-<div class="container">
+<div class="container" >
 	<div class="col my-4">
-	<h2> My cart Tracker - track your cart item</h2>
-	<div >
-		<ul class="list-group" id="items">
- 
-		</ul>
-
-	</div>
-</div>
-<div class='col my-4'>
-	<h2> step-2	</h2>
-	<form class="row g-3"  method="post" action="/shop/checkout/">{% csrf_token %}
-        <input type="hidden" name="items_json" id="items_json">
+	<h2> My cart Tracker - Enter your Email id and order id</h2>
+        <form class="row g-3"  method="post" action="#" id='trackerform'>{% csrf_token %}
 		<div class="col-md-6">
-    <label for="inputname" class="form-label">Name</label>
-    <input type="text" class="form-control" id="inputname" name='name' placeholder="name">
+
+    <label for="inputname" class="form-label">Order id</label>
+    <input type="text" class="form-control" id="order_id" name='order_id' placeholder="order id">
   </div>
   <div class="col-md-6">
     <label for="inputEmail" class="form-label">Email</label>
     <input type="email" class="form-control" id="inputEmail" name='email' placeholder="Email">
   </div>
-  <div class="col-6">
-    <label for="inputmobile" class="form-label">Mobile no.</label>
-    <input type="tel" class="form-control" id="inputmobile" name='mobile' placeholder="1234">
-  </div>
-  
-  <div class="col-12">
-    <label for="inputAddress1" class="form-label">Address1 </label>
-    <input type="text" class="form-control" id="inputAddress1"  name='add1' placeholder="1234 Main St">
-  </div>
-  <div class="col-12">
-    <label for="inputAddress2" class="form-label">Address2</label>
-    <input type="text" class="form-control" id="inputAddress2"  name='add2' placeholder="Apartment, studio, or floor">
-  </div>
-  <div class="col-md-6">
-    <label for="inputCity" class="form-label">City</label>
-    <input type="text" class="form-control" id="inputCity" name='city'>
-  </div>
-  <div class="col-md-4">
-    <label for="inputState" class="form-label">State</label>
-    <input type="text" class="form-control" id="inputState" name='state' placeholder="Enter state">
-  </div>
-  <div class="col-md-2">
-    <label for="inputZip" class="form-label">Zip</label>
-    <input type="text" class="form-control" id="inputZip" name='zip_code'>
-  </div>
+            <button type="submit" class="btn btn-primary">Track order</button>
+        </form>
 
-
-  <div class="col-12">
-    <button type="submit" class="btn btn-primary">Place order</button>
-  </div>
-</form>
+	<h2 class="my-4"> step-2  Enter Address & Other Detail</h2>
+    <div class="my-4">
+		<ul class="list-group" id="items">
+            <h4> tracking yourstatus</h4>
+		</ul>
+	</div>
+        <h2 class="my-4"> step-2  Other Detail</h2>
+    <div class="my-4">
+		<ul class="list-group" id="citems">
+            <h4> tracking your order</h4>
+		</ul>
+	</div>
 </div>
 </div>
 
@@ -67,47 +42,73 @@
 
 {% block js %}
 <script type="text/javascript">
+$(#trackerform).submit(function(event){
+
+	$('#items').empty();
+	var formdata={
+		'order_ID':$('input[name=order_ID]').val(),
+		'email': $('input[name=email]').val(),
+		'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
+	}
 
 
-if $.isEmptyObject(cart){
+	 $.ajax({
+	 	type:'POST',
+	 	url : 'shop/tracker/',
+	 	data :formdata,
+	 	encode:true
 
-}
-else{
-if (localStorage.getItem('cart') == null){
-var cart = {};
-}else{
-  cart =JSON.parse(localStorage.getItem('cart'));
-   
-}
-console.log(cart);
- var sum = 0;
-if $(.is EmptyObject(cart)){
-	//if object is empty
-	mystr=`<p>your cart is empty add some item for checkout</p>`
-	$('#items').append(mystr);
-}
-else{
-for (item in cart){
-	let name = cart[item][1];
-	let qty = cart[item][0];
+	 })
+.done(function(data){
+	console.log(data)
+	data=JSON.parse(data);
+	updates=data[0];
+	if(updates.length>0 & updates !={})
+
+
+	for (i=0;i<updates.lenght;i++){
+	let text = updates[i]['text'];
+	let time = updates[i]['time'];
 	sum = sum+qty;
 	mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
-    ${name} 
-
-    <span class="badge bg-primary rounded-pill">${qty}</span>
+    ${text}
+    <span class="badge bg-primary rounded-pill">${time}</span>
   </li> `
 
 $('#items').append(mystr);
 }
 }
-document.getElementById("cart").innerHTML =sum;
+else{
+mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+    sorry
 
-$('#item_json').val(JSON.stingify(cart));
-{% if thank %}
-alert('thanks for ordering {{id}}and u can track order on tracker')
-localStorage.clear();
-document.location = '/shop';
-{% endif %}
+  </li> `
+
+$('#items').append(mystr);
+
+
+}
+//fill in the order detail
+cart=JSON.parse(data[1]);
+console.log(cart);
+for (item in cart){
+	let name = cart[item][1];
+	let qty = cart[item][0];
+
+	mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+    ${name}
+    <span class="badge bg-primary rounded-pill">${qty}</span>
+  </li> `
+
+$('#citems').append(mystr);
+})
+
+event.preventDefault();
+
+})
+
+
+
 </script>
 
 {% endblock %}
