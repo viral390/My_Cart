@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '3&b#h45z!izgu=*f666!6356$o9q-si=l*r5a(1vueysyv#h34'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["My_cart","www.my_cart.inc"]
 
 
 # Application definition
